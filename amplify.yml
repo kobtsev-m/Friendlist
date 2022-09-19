@@ -3,6 +3,7 @@ backend:
   phases:
     preBuild:
       commands:
+        - npm install -g node-pre-gyp
         - cd amplify/backend/function/friendlist/src
         - yarn install
         - yarn migration:run
