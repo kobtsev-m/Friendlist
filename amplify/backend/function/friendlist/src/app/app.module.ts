@@ -1,4 +1,3 @@
-import * as path from 'path';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -9,14 +8,12 @@ import { RolesModule } from './modules/roles/roles.module';
 import { AuthModule } from './modules/auth/auth.module';
 import typeOrmDataSource from '../typeorm.config';
 
-const clientSourcePath = path.join('..', '..', '..', '..');
-
 const graphQLModuleOptions: ApolloDriverConfig = {
   driver: ApolloDriver,
   sortSchema: true,
   context: ({ req }) => ({ headers: req.headers }),
-  autoSchemaFile: path.join(clientSourcePath, 'schema.gql'),
-  definitions: { path: path.join(clientSourcePath, 'src', 'types', 'api.ts') }
+  autoSchemaFile: 'schema.gql',
+  definitions: { path: 'gql-types.ts' }
 };
 
 @Module({
