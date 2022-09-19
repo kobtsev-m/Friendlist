@@ -31,7 +31,7 @@
     "LambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Metadata": {
-        "aws:asset:path": "./dist",
+        "aws:asset:path": "./src",
         "aws:asset:property": "Code"
       },
       "Properties": {
@@ -43,7 +43,7 @@
             "Ref": "s3Key"
           }
         },
-        "Handler": "index.handler",
+        "Handler": "dist/index.handler",
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",

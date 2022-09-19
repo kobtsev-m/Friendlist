@@ -1,10 +1,10 @@
-import * as dotenv from 'dotenv';
-import * as path from 'path';
-import { DataSource } from 'typeorm';
+const dotenv = require('dotenv');
+const path = require('path');
+const { DataSource } = require('typeorm');
 
 dotenv.config();
 
-export const typeOrmConfig = {
+const typeOrmConfig = {
   type: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: +process.env.POSTGRES_PORT,
@@ -17,4 +17,5 @@ export const typeOrmConfig = {
   synchronize: false
 };
 
-export default new DataSource(typeOrmConfig);
+module.exports = new DataSource(typeOrmConfig);
+module.exports.typeOrmConfig = typeOrmConfig;

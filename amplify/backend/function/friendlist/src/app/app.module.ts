@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from './config/typeorm.config';
+import { typeOrmConfig } from '../typeorm.config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AppResolver } from './app.resolver';
