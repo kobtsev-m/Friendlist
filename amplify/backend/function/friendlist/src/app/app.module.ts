@@ -1,13 +1,13 @@
 import * as path from 'path';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from '../typeorm.config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AppResolver } from './app.resolver';
 import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { AuthModule } from './modules/auth/auth.module';
+import typeOrmDataSource from '../typeorm.config';
 
 const clientSourcePath = path.join('..', '..', '..', '..');
 
@@ -23,7 +23,7 @@ const graphQLModuleOptions: ApolloDriverConfig = {
   providers: [AppResolver],
   imports: [
     GraphQLModule.forRoot(graphQLModuleOptions),
-    TypeOrmModule.forRoot(typeOrmConfig),
+    TypeOrmModule.forRoot(typeOrmDataSource.options),
     UsersModule,
     RolesModule,
     AuthModule

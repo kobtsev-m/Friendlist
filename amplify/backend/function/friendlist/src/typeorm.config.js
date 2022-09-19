@@ -17,5 +17,4 @@ const typeOrmConfig = {
   synchronize: false
 };
 
-module.exports = new DataSource(typeOrmConfig);
-module.exports.typeOrmConfig = typeOrmConfig;
+exports.default = new DataSource(typeOrmConfig);
