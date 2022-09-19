@@ -3,10 +3,10 @@ backend:
   phases:
     preBuild:
       commands:
-        - cd amplify/backend/function/friendlist
+        - cd amplify/backend/function/friendlist/src
         - yarn install
         - yarn migration:run
-        - cd ../../../../
+        - cd ../../../../../
     build:
       commands:
         - amplifyPush --simple
