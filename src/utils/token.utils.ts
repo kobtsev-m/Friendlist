@@ -1,27 +1,17 @@
 import { apolloClient } from '../config/apollo.config';
 
+const TOKEN_KEY = 'jwttoken';
+
 export const setTokenInLocalStorage = (token: string) => {
-  const tokenKey = process.env.REACT_APP_TOKEN_KEY;
-  if (!tokenKey) {
-    return;
-  }
-  localStorage.setItem(tokenKey, token);
+  localStorage.setItem(TOKEN_KEY, token);
 };
 
 export const getTokenFromLocalStorage = () => {
-  const tokenKey = process.env.REACT_APP_TOKEN_KEY;
-  if (!tokenKey) {
-    return;
-  }
-  return localStorage.getItem(tokenKey);
+  return localStorage.getItem(TOKEN_KEY);
 };
 
 export const removeTokenFromLocalStorage = () => {
-  const tokenKey = process.env.REACT_APP_TOKEN_KEY;
-  if (!tokenKey) {
-    return;
-  }
-  return localStorage.removeItem(tokenKey);
+  return localStorage.removeItem(TOKEN_KEY);
 };
 
 export const updateTokenHeader = () => apolloClient.resetStore();

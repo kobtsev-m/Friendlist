@@ -16,7 +16,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `${process.env.REACT_APP_TOKEN_TYPE} ${token}` : ''
+      authorization: token ? `Bearer ${token}` : ''
     }
   };
 });
