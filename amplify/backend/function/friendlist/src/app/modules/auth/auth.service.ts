@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@n
 import { UsersService } from '../users/users.service';
 import { CreateUserInput } from '../users/inputs/CreateUserInput';
 import { User } from '../../entities/user.entity';
-import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserInput } from '../users/inputs/LoginUserInput';
 
@@ -20,8 +19,7 @@ export class AuthService {
     if (existingUser) {
       throw new HttpException('User with such email already exists', HttpStatus.BAD_REQUEST);
     }
-    const hashPassword = await bcrypt.hash(input.password, 6);
-    const user = await this.userService.create({ ...input, password: hashPassword });
+    const user = await this.userService.create(input);
     return this.generateToken(user);
   }
 
@@ -35,7 +33,7 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException({ message: 'Incorrect email or password' });
     }
-    const isPasswordCorrect = await bcrypt.compare(input.password, user.password);
+    const isPasswordCorrect = input.password === user.password;
     if (!isPasswordCorrect) {
       throw new UnauthorizedException({ message: 'Incorrect email or password' });
     }
