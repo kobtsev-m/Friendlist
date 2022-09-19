@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 dotenv.config();
 
-export const typeOrmConfig: DataSourceOptions = {
+export const typeOrmConfig = {
   type: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: +process.env.POSTGRES_PORT,
