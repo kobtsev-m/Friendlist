@@ -8,14 +8,12 @@ import { RolesModule } from './modules/roles/roles.module';
 import { AuthModule } from './modules/auth/auth.module';
 import typeOrmDataSource from '../typeorm.config';
 
-const frontendPath = '../../../../../';
-
 const graphQLModuleOptions: ApolloDriverConfig = {
   driver: ApolloDriver,
   sortSchema: true,
   context: ({ req }) => ({ headers: req.headers }),
-  autoSchemaFile: frontendPath + 'schema.gql',
-  definitions: { path: frontendPath + 'src/types/api.ts' }
+  autoSchemaFile: 'app/types/schema.gql',
+  definitions: { path: 'app/types/gql-types.ts' }
 };
 
 @Module({
