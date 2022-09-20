@@ -3,7 +3,7 @@ backend:
   preBuild:
     commands:
       - cd amplify/backend/function/friendlist/src
-      - yarn install --production
+      - yarn install
       - yarn migration:run
       - cd ../../../../../
     build:
@@ -13,7 +13,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - yarn install --production
+        - yarn install
     build:
       commands:
         - yarn build
