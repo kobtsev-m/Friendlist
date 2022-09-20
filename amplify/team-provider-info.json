@@ -1,21 +1,21 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-friendlist-dev-230718-authRole",
-      "UnauthRoleArn": "arn:aws:iam::564978289903:role/amplify-friendlist-dev-230718-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::564978289903:role/amplify-friendlist-dev-230718-authRole",
+      "AuthRoleName": "amplify-friendlist-dev-54906-authRole",
+      "UnauthRoleArn": "arn:aws:iam::564978289903:role/amplify-friendlist-dev-54906-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::564978289903:role/amplify-friendlist-dev-54906-authRole",
       "Region": "us-west-2",
-      "DeploymentBucketName": "amplify-friendlist-dev-230718-deployment",
-      "UnauthRoleName": "amplify-friendlist-dev-230718-unauthRole",
-      "StackName": "amplify-friendlist-dev-230718",
-      "StackId": "arn:aws:cloudformation:us-west-2:564978289903:stack/amplify-friendlist-dev-230718/253fbe30-3835-11ed-8c98-0ae8e4d9f703",
-      "AmplifyAppId": "d3ml53x24ea4qt"
+      "DeploymentBucketName": "amplify-friendlist-dev-54906-deployment",
+      "UnauthRoleName": "amplify-friendlist-dev-54906-unauthRole",
+      "StackName": "amplify-friendlist-dev-54906",
+      "StackId": "arn:aws:cloudformation:us-west-2:564978289903:stack/amplify-friendlist-dev-54906/4686e630-386d-11ed-aa81-06d4b8f59bb3",
+      "AmplifyAppId": "d1ik30ogqru4ia"
     },
     "categories": {
       "function": {
         "friendlist": {
-          "deploymentBucketName": "amplify-friendlist-dev-230718-deployment",
-          "s3Key": "amplify-builds/friendlist-4c445652726374557752-build.zip"
+          "deploymentBucketName": "amplify-friendlist-dev-54906-deployment",
+          "s3Key": "amplify-builds/friendlist-68365050753856496473-build.zip"
         }
       }
     }
