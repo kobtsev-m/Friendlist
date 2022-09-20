@@ -6,9 +6,10 @@ backend:
       - yarn install
       - yarn migration:run
       - cd ../../../../../
-    build:
-      commands:
-        - amplifyPush --simple
+  build:
+    commands:
+      - amplifyPush --simple
+      - npm prune --production
 frontend:
   phases:
     preBuild:
