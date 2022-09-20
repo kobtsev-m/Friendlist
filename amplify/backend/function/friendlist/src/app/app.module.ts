@@ -13,7 +13,7 @@ const graphQLModuleOptions: ApolloDriverConfig = {
   sortSchema: true,
   context: ({ req }) => ({ headers: req.headers }),
   autoSchemaFile: 'app/types/schema.gql',
-  definitions: { path: 'app/types/gql-types.ts' }
+  definitions: { path: 'app/types/gql.types.ts' }
 };
 
 @Module({
