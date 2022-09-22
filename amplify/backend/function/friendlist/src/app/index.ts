@@ -27,12 +27,14 @@ const index = async () => {
     .listen(process.env.PORT)
     .then(() => console.log(`App started on port ${process.env.PORT}`));
 
-  return createServer(expressApp);
+  cachedServer = createServer(expressApp);
+
+  return cachedServer;
 };
 
 index();
 
 exports.handler = async (event, context) => {
   cachedServer = await index();
-  return proxy(cachedServer, event, context, 'PROMISE').promise;
+  return await proxy(cachedServer, event, context, 'PROMISE').promise;
 };

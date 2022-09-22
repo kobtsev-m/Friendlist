@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -12,8 +13,8 @@ const graphQLModuleOptions: ApolloDriverConfig = {
   driver: ApolloDriver,
   sortSchema: true,
   context: ({ req }) => ({ headers: req.headers }),
-  autoSchemaFile: 'app/types/schema.gql',
-  definitions: { path: 'app/types/gql.types.ts' }
+  autoSchemaFile: path.join(process.cwd(), 'app', 'types', 'schema.gql'),
+  definitions: { path: path.join(process.cwd(), 'app', 'types', 'gql.types.ts') }
 };
 
 @Module({
