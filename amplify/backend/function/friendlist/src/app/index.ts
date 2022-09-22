@@ -14,7 +14,7 @@ let cachedServer: Server;
 
 const index = async () => {
   if (cachedServer) {
-    return cachedServer;
+    return;
   }
 
   const expressApp = express();
@@ -28,13 +28,11 @@ const index = async () => {
     .then(() => console.log(`App started on port ${process.env.PORT}`));
 
   cachedServer = createServer(expressApp);
-
-  return cachedServer;
 };
 
 index();
 
 exports.handler = async (event, context) => {
-  cachedServer = await index();
+  await index();
   return await proxy(cachedServer, event, context, 'PROMISE').promise;
 };

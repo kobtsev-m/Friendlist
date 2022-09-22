@@ -10,7 +10,7 @@ backend:
     build:
       commands:
         - amplifyPush --simple
-        - npm prune --production
+        - yarn install --production
         - npm install -g node-prune
         - node-prune
 frontend:
