@@ -7,7 +7,7 @@ import { AppResolver } from './app.resolver';
 import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { AuthModule } from './modules/auth/auth.module';
-import typeOrmDataSource from '../typeorm.config';
+import * as typeOrmConfig from './config/typeorm.config';
 
 const graphQLModuleOptions: ApolloDriverConfig = {
   driver: ApolloDriver,
@@ -21,7 +21,7 @@ const graphQLModuleOptions: ApolloDriverConfig = {
   providers: [AppResolver],
   imports: [
     GraphQLModule.forRoot(graphQLModuleOptions),
-    TypeOrmModule.forRoot(typeOrmDataSource.options),
+    TypeOrmModule.forRoot(typeOrmConfig),
     UsersModule,
     RolesModule,
     AuthModule

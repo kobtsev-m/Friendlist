@@ -1,18 +1,9 @@
 version: 1
 backend:
   phases:
-    preBuild:
-      commands:
-        - cd amplify/backend/function/friendlist/src
-        - yarn install
-        - yarn migration:run
-        - cd ../../../../../
     build:
       commands:
-        - amplifyPush --simple
-        - yarn install --production
-        - npm install -g node-prune
-        - node-prune
+        - amplify/backend/function/friendlist/src/amplify-push.sh
 frontend:
   phases:
     preBuild:

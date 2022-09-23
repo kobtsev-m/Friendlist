@@ -8,12 +8,12 @@
    "scripts": {
       "prebuild": "rimraf dist",
       "build": "nest build",
-      "start": "node dist/index.js",
-      "start:dev": "nest start --watch",
-      "typeorm": "typeorm-ts-node-commonjs -d ./typeorm.config.js",
-      "migration:generate": "yarn build && yarn typeorm migration:generate",
-      "migration:run": "yarn build && yarn typeorm migration:run",
-      "migration:revert": "yarn build && yarn typeorm migration:revert"
+      "start": "nest start --watch",
+      "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+      "migration:generate": "yarn typeorm migration:generate -f app/config/typeorm.config.ts -n",
+      "migration:revert": "yarn typeorm migration:revert -f app/config/typeorm.config.ts",
+      "migration:show": "yarn build && yarn typeorm migration:show -f app/config/typeorm.config.ts",
+      "migration:run": "yarn build && yarn typeorm migration:run -f app/config/typeorm.config.ts"
    },
    "dependencies": {
       "@nestjs/apollo": "^10.1.0",
@@ -31,7 +31,7 @@
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.13",
       "rxjs": "^7.2.0",
-      "typeorm": "0.3.9"
+      "typeorm": "0.2.37"
    },
    "devDependencies": {
       "@nestjs/cli": "^9.1.3",

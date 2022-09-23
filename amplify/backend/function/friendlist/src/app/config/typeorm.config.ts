@@ -1,6 +1,4 @@
-const dotenv = require('dotenv');
-const path = require('path');
-const { DataSource } = require('typeorm');
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -11,10 +9,10 @@ const typeOrmConfig = {
   database: process.env.POSTGRES_DATABASE,
   username: process.env.POSTGRES_USERNAME,
   password: process.env.POSTGRES_PASSWORD,
-  entities: [path.join('dist', '**', '*.entity.js')],
-  migrations: [path.join('dist', 'migrations', '*.js')],
+  entities: [`${__dirname}/../**/*.entity.{ts,js}`],
+  migrations: [`${__dirname}/../migrations/*.{ts,js}`],
   migrationsTableName: 'migrations',
   synchronize: false
 };
 
-exports.default = new DataSource(typeOrmConfig);
+export = typeOrmConfig;
