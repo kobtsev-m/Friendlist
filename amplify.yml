@@ -3,6 +3,7 @@ backend:
   phases:
     build:
       commands:
+        - chmod 755 amplify/backend/function/friendlist/src/amplify-push.sh
         - amplify/backend/function/friendlist/src/amplify-push.sh
 frontend:
   phases:
