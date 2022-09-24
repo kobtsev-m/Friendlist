@@ -1,10 +1,16 @@
 version: 1
 backend:
   phases:
+    preBuild:
+      commands:
+        - cd amplify/backend/function/friendlist/src
+        - yarn install
+        - yarn migration:run
+        - cd ../../../../../
     build:
       commands:
-        - chmod 755 amplify/backend/function/friendlist/src/amplify-push.sh
-        - amplify/backend/function/friendlist/src/amplify-push.sh
+        - amplifyPush --simple
+        - yarn install --production
 frontend:
   phases:
     preBuild:
