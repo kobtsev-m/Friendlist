@@ -3,6 +3,7 @@ backend:
   phases:
     build:
       commands:
+        - apt-get install jq docker -y
         - chmod 755 amplify/backend/function/friendlist/src/amplify-push.sh
         - amplify/backend/function/friendlist/src/amplify-push.sh
 frontend:
