@@ -1,8 +1,9 @@
 import * as dotenv from 'dotenv';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 dotenv.config();
 
-const typeOrmConfig = {
+const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: +process.env.POSTGRES_PORT,
@@ -12,7 +13,8 @@ const typeOrmConfig = {
   entities: [`${__dirname}/../**/*.entity.{ts,js}`],
   migrations: [`${__dirname}/../migrations/*.{ts,js}`],
   migrationsTableName: 'migrations',
-  synchronize: false
+  synchronize: false,
+  keepConnectionAlive: true
 };
 
 export = typeOrmConfig;
