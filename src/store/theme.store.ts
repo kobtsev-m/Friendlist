@@ -1,14 +1,35 @@
-import create from 'zustand';
-import { AppTheme } from '../config/theme.config';
+import { RootStore } from './root.store';
+import { makeAutoObservable } from 'mobx';
+import { AppTheme, darkTheme, lightTheme } from '../config/theme.config';
+import {
+  getSidebarOpenFromLocalStorage,
+  getThemeModeFromLocalStorage,
+  setSidebarOpenInLocalStorage,
+  setThemeModeInLocalStorage
+} from '../utils/theme.utils';
 
-interface ThemeState {
-  theme: AppTheme;
-  toggleTheme: () => void;
-}
+export class ThemeStore {
+  theme = getThemeModeFromLocalStorage() ?? AppTheme.Dark;
+  isSidebarOpen = getSidebarOpenFromLocalStorage();
 
-export const useThemeStore = create<ThemeState>((set) => ({
-  theme: AppTheme.Dark,
-  toggleTheme: () => {
-    set((state) => ({ theme: state.theme === AppTheme.Dark ? AppTheme.Light : AppTheme.Dark }));
+  constructor(private rootStore: RootStore) {
+    makeAutoObservable(this);
   }
-}));
+
+  toggleTheme() {
+    this.theme = this.theme === AppTheme.Dark ? AppTheme.Light : AppTheme.Dark;
+    setThemeModeInLocalStorage(this.theme);
+  }
+  getThemeStyles() {
+    return this.theme === AppTheme.Dark ? darkTheme : lightTheme;
+  }
+
+  closeSidebar() {
+    this.isSidebarOpen = false;
+    setSidebarOpenInLocalStorage(false);
+  }
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+    setSidebarOpenInLocalStorage(this.isSidebarOpen);
+  }
+}

@@ -1,6 +1,10 @@
+import * as dotenv from 'dotenv';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { TokenPayload } from '../types/TokenPayload';
+
+dotenv.config();
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -14,8 +18,9 @@ export class AuthGuard implements CanActivate {
       if (bearer !== 'Bearer' || !token) {
         throw new Error();
       }
-      const user = this.jwtService.verify(token);
-      ctx.userId = user.id;
+      const verifyTokenOptions = { secret: process.env.ACCESS_TOKEN_SECRET };
+      const tokenPayload = <TokenPayload>this.jwtService.verify(token, verifyTokenOptions);
+      ctx.userId = tokenPayload.id;
       return true;
     } catch {
       throw new UnauthorizedException({ message: 'User is not authorized' });

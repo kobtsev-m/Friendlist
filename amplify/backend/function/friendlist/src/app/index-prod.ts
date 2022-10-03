@@ -1,5 +1,6 @@
 import { Server } from 'http';
 import { NestFactory } from '@nestjs/core';
+import { NestApplicationOptions } from '@nestjs/common';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import { createServer, proxy } from 'aws-serverless-express';
 import * as express from 'express';
@@ -10,9 +11,12 @@ let cachedServer: Server;
 
 const bootstrap = async () => {
   const expressApp = express();
+  const expressAdapter = new ExpressAdapter(expressApp);
+  const appOptions: NestApplicationOptions = { logger: ['error', 'warn'] };
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    new ExpressAdapter(expressApp)
+    expressAdapter,
+    appOptions
   );
   configApp(app);
   await app.init();

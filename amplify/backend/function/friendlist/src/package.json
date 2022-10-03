@@ -12,8 +12,8 @@
       "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
       "migration:generate": "yarn typeorm migration:generate -f app/config/typeorm.config.ts -n",
       "migration:revert": "yarn typeorm migration:revert -f app/config/typeorm.config.ts",
-      "migration:show": "yarn build && yarn typeorm migration:show -f app/config/typeorm.config.ts",
-      "migration:run": "yarn build && yarn typeorm migration:run -f app/config/typeorm.config.ts"
+      "migration:show": "yarn typeorm migration:show -f app/config/typeorm.config.ts",
+      "migration:run": "yarn typeorm migration:run -f app/config/typeorm.config.ts"
    },
    "dependencies": {
       "@nestjs/apollo": "^10.1.0",
@@ -24,6 +24,7 @@
       "@nestjs/platform-express": "^9.0.0",
       "@nestjs/typeorm": "^9.0.1",
       "apollo-server-express": "^3.10.2",
+      "argon2": "^0.29.1",
       "aws-serverless-express": "^3.4.0",
       "dotenv": "^16.0.2",
       "express": "^4.18.1",
@@ -48,7 +49,6 @@
       "prettier": "^2.3.2",
       "rimraf": "^3.0.2",
       "source-map-support": "^0.5.20",
-      "ts-loader": "^9.2.3",
       "ts-morph": "^16.0.0",
       "ts-node": "10.7.0",
       "tsconfig-paths": "4.1.0",

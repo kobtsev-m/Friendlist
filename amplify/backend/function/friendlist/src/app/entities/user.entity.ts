@@ -2,13 +2,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Role } from './role.entity';
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+
+export enum Role {
+  Admin = 'Admin',
+  User = 'User',
+  Moderator = 'Moderator'
+}
+
+registerEnumType(Role, { name: 'Role' });
 
 @ObjectType()
 @Entity('users')
@@ -33,20 +38,18 @@ export class User {
   @Column({ type: 'varchar', length: 255 })
   lastName: string;
 
-  @Field()
+  @Field(() => Date)
   @CreateDateColumn()
   createdAt: Date;
 
-  @Field()
+  @Field(() => Date)
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Field(() => [Role])
-  @ManyToMany(() => Role, (role) => role.users)
-  @JoinTable({
-    name: 'users_roles',
-    joinColumn: { name: 'user', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'role', referencedColumnName: 'id' },
-  })
-  roles: Role[];
+  @Field(() => Role)
+  @Column({ type: 'enum', enum: Role, default: Role.User })
+  role: Role;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  refreshToken: string;
 }

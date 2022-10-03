@@ -1,4 +1,4 @@
 {
   "name": "GraphQL Schema",
-  "schemaPath": "amplify/backend/function/friendlist/src/app/types/schema.gql"
+  "schemaPath": "amplify/backend/function/friendlist/src/schema.gql"
 }

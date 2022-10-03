@@ -6,20 +6,16 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import logo2 from '../../assets/img/logo2.png';
+import logo2 from '../../assets/img/logo/2.png';
 import { useNavigate } from 'react-router-dom';
-import Link from '@mui/material/Link';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { LoginUserInput, User } from '../../types/api';
-import { useLazyQuery } from '@apollo/client';
-import { LOGIN_QUERY } from '../../api/auth.api';
+import { LoginUserInput } from '../../types/api.types';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Alert } from '@mui/material';
 import { AppRoutes } from '../../router/routes';
-import { setTokenInLocalStorage, updateTokenHeader } from '../../utils/token.utils';
-import { GET_USER_QUERY } from '../../api/user.api';
-import { useUserStore } from '../../store/user.store';
+import { useStores } from '../../hooks/useStores';
+import { observer } from 'mobx-react-lite';
 
 const validationSchema = yup.object({
   email: yup.string().email('Enter a valid email').required('This is a required field'),
@@ -29,15 +25,16 @@ const validationSchema = yup.object({
     .required('This is a required field')
 });
 
-export const SignInPage: React.FC = () => {
+export const SignInPage: React.FC = observer(() => {
   const navigate = useNavigate();
+  const { userStore } = useStores();
 
-  const [login, loginQuery] = useLazyQuery<{ login: string }, { input: LoginUserInput }>(
-    LOGIN_QUERY
-  );
-  const [getUser] = useLazyQuery<{ getUser: User }>(GET_USER_QUERY);
-
-  const setUser = useUserStore((state) => state.setUser);
+  const handleSubmit = async (values: LoginUserInput) => {
+    await userStore.login.action(values);
+    if (!userStore.login.error) {
+      navigate(AppRoutes.Home);
+    }
+  };
 
   const formik = useFormik<LoginUserInput>({
     initialValues: {
@@ -45,25 +42,7 @@ export const SignInPage: React.FC = () => {
       password: ''
     },
     validationSchema,
-    onSubmit: async (values) => {
-      // Getting token
-      const { data: loginData } = await login({ variables: { input: values } });
-      if (!loginData) {
-        return;
-      }
-      const token = loginData.login;
-      setTokenInLocalStorage(token);
-      await updateTokenHeader();
-      // Getting user
-      const { data: getUserData } = await getUser();
-      if (!getUserData) {
-        return;
-      }
-      const user = getUserData.getUser;
-      setUser(user);
-      // Redirect to home page
-      navigate(AppRoutes.Home);
-    }
+    onSubmit: handleSubmit
   });
 
   return (
@@ -97,9 +76,9 @@ export const SignInPage: React.FC = () => {
               onSubmit={formik.handleSubmit}
               sx={{ width: '100%', mt: 3 }}
             >
-              {loginQuery.error && (
+              {userStore.login.error && (
                 <Alert severity='error' sx={{ mb: 3 }}>
-                  {loginQuery.error.message}
+                  {userStore.login.error}
                 </Alert>
               )}
               <Grid container spacing={2}>
@@ -134,21 +113,20 @@ export const SignInPage: React.FC = () => {
                 fullWidth
                 variant='contained'
                 sx={{ mt: 3, mb: 3 }}
-                loading={loginQuery.loading}
+                loading={userStore.login.loading}
               >
                 Sign in
               </LoadingButton>
               <Box>
-                <Link
-                  href=''
-                  variant='body2'
+                <Button
+                  size='small'
                   onClick={(e) => {
                     e.preventDefault();
                     navigate('/signup');
                   }}
                 >
                   Doesn't have an account? Sign up
-                </Link>
+                </Button>
               </Box>
             </Box>
           </Grid>
@@ -179,4 +157,4 @@ export const SignInPage: React.FC = () => {
       </Container>
     </Box>
   );
-};
+});

@@ -3,24 +3,23 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import logo3 from '../../assets/img/logo3.png';
+import logo3 from '../../assets/img/logo/3.png';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { CreateUserInput } from '../../types/api';
+import { CreateUserInput } from '../../types/api.types';
 import * as yup from 'yup';
 import { AppRoutes } from '../../router/routes';
-import { useMutation } from '@apollo/client';
-import { REGISTER_MUTATION } from '../../api/auth.api';
 import { Alert } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as _ from 'lodash';
 import { toast } from 'react-toastify';
+import { useStores } from '../../hooks/useStores';
+import { observer } from 'mobx-react-lite';
 
 const validationSchema = yup.object({
   firstName: yup.string().required('This is a required field'),
@@ -33,15 +32,20 @@ const validationSchema = yup.object({
   termsOfUse: yup.boolean().equals([true], 'This is a required field')
 });
 
-export const SignUpPage: React.FC = () => {
+type CreateUserForm = CreateUserInput & { termsOfUse: boolean };
+
+export const SignUpPage: React.FC = observer(() => {
   const navigate = useNavigate();
+  const { userStore } = useStores();
 
-  const [register, registerMutation] = useMutation<
-    { register: string },
-    { input: CreateUserInput }
-  >(REGISTER_MUTATION);
+  const handleSubmit = async (values: CreateUserForm) => {
+    const newValues = _.omit(values, 'termsOfUse');
+    await userStore.register.action(newValues);
+    toast('You successfully registered!', { type: 'success' });
+    navigate('/signin');
+  };
 
-  const formik = useFormik<CreateUserInput & { termsOfUse: boolean }>({
+  const formik = useFormik<CreateUserForm>({
     initialValues: {
       firstName: '',
       lastName: '',
@@ -50,15 +54,7 @@ export const SignUpPage: React.FC = () => {
       termsOfUse: false
     },
     validationSchema,
-    onSubmit: async (values) => {
-      const newValues = _.omit(values, 'termsOfUse');
-      const { data } = await register({ variables: { input: newValues } });
-      if (!data) {
-        return;
-      }
-      toast('You successfully registered!', { type: 'success' });
-      navigate('/signin');
-    }
+    onSubmit: handleSubmit
   });
 
   return (
@@ -115,9 +111,9 @@ export const SignUpPage: React.FC = () => {
               onSubmit={formik.handleSubmit}
               sx={{ width: '100%', mt: 3 }}
             >
-              {registerMutation.error && (
+              {userStore.register.error && (
                 <Alert severity='error' sx={{ mb: 3 }}>
-                  {registerMutation.error.message}
+                  {userStore.register.error}
                 </Alert>
               )}
               <Grid container spacing={2}>
@@ -195,22 +191,21 @@ export const SignUpPage: React.FC = () => {
                 fullWidth
                 variant='contained'
                 sx={{ my: 3 }}
-                loading={registerMutation.loading}
+                loading={userStore.register.loading}
               >
                 Sign Up
               </LoadingButton>
               <Grid container justifyContent='flex-end'>
                 <Grid item>
-                  <Link
-                    href=''
-                    variant='body2'
+                  <Button
+                    size='small'
                     onClick={(e) => {
                       e.preventDefault();
                       navigate('/signin');
                     }}
                   >
                     Already have an account? Sign in
-                  </Link>
+                  </Button>
                 </Grid>
               </Grid>
             </Box>
@@ -219,4 +214,4 @@ export const SignUpPage: React.FC = () => {
       </Container>
     </Box>
   );
-};
+});

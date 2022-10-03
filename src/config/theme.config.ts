@@ -20,8 +20,8 @@ export const darkTheme = createTheme({
       styleOverrides: {
         input: {
           '&:-webkit-autofill': {
-            '-webkit-box-shadow': '0 0 0 100px #121212 inset',
-            '-webkit-text-fill-color': '#ffffff'
+            WebkitBoxShadow: '0 0 0 100px #121212 inset',
+            WebkitTextFillColor: '#ffffff'
           }
         }
       }
@@ -44,11 +44,20 @@ export const lightTheme = createTheme({
       styleOverrides: {
         input: {
           '&:-webkit-autofill': {
-            '-webkit-box-shadow': '0 0 0 100px #ffffff inset',
-            '-webkit-text-fill-color': '#000000'
+            WebkitBoxShadow: '0 0 0 100px #ffffff inset',
+            WebkitTextFillColor: '#000000'
           }
         }
       }
     }
   }
 });
+
+export const globalStyles = {
+  '.gmnoprint': {
+    display: 'none !important'
+  },
+  'img[alt=Google]': {
+    display: 'none !important'
+  }
+};

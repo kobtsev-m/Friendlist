@@ -1,36 +1,36 @@
+import * as argon2 from 'argon2';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './inputs/CreateUserInput';
-import { RolesService } from '../roles/roles.service';
-
-const DEFAULT_USER_ROLE_VALUE = 'user';
+import { TokensObject } from './objects/TokensObject';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
-    private rolesService: RolesService,
-  ) {}
+  constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
   getAll() {
     return this.userRepository.find();
   }
 
+  getById(userId: string) {
+    return this.userRepository.findOne({ where: { id: userId } });
+  }
+
+  getByEmail(email: string) {
+    return this.userRepository.findOne({ where: { email } });
+  }
+
   async create(input: CreateUserInput) {
+    input.password = await argon2.hash(input.password);
     const user = this.userRepository.create(input);
-    const defaultRole = await this.rolesService.getRoleByValue(DEFAULT_USER_ROLE_VALUE);
-    user.roles = [defaultRole];
     await this.userRepository.save(user);
     return user;
   }
 
-  getUserById(userId: string) {
-    return this.userRepository.findOne({ where: { id: userId }, relations: ['roles'] });
-  }
-
-  getUserByEmail(email: string) {
-    return this.userRepository.findOne({ where: { email }, relations: ['roles'] });
+  async updateRefreshToken(user: User, tokens: TokensObject) {
+    user.refreshToken = await argon2.hash(tokens.refreshToken);
+    await this.userRepository.save(user);
   }
 }

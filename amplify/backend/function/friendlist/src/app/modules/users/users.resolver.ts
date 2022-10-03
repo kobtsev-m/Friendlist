@@ -1,7 +1,7 @@
 import { Context, Query, Resolver } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { User } from '../../entities/user.entity';
-import { Roles, RolesGuard } from '../auth/guards/roles.gruad';
+import { Role, User } from '../../entities/user.entity';
+import { RolesGuard, UseRoles } from '../auth/guards/roles.gruad';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards/auth.guard';
 
@@ -12,11 +12,11 @@ export class UsersResolver {
   @Query(() => User)
   @UseGuards(AuthGuard)
   getUser(@Context('userId') userId: string) {
-    return this.usersService.getUserById(userId);
+    return this.usersService.getById(userId);
   }
 
   @Query(() => [User])
-  @Roles('admin')
+  @UseRoles(Role.Admin)
   @UseGuards(RolesGuard)
   getAllUsers() {
     return this.usersService.getAll();
